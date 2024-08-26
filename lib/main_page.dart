@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'drawer_menu.dart';
 import 'features/screens/side_screen/navigation_menu.dart';
-import 'features/screens/side_screen/side_screen.dart';
 import 'features/screens/side_screen/widgets/icons_side.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +15,23 @@ class MainScreen extends StatelessWidget {
         child: Row(
           children: [
             // DrawerMenu: 15% of the total width
-            Container(
+            SizedBox(
               width: screenWidth * 0.08,
               child: const DrawerMenu(),
             ),
             // NavigationTabBar: 45% of the total width
-            Container(
+            SizedBox(
               width: screenWidth * 0.64,
               child: const NavigationTabBar(),
             ),
             // Third Container: 40% of the total width
-            Container(
+            SizedBox(
               width: screenWidth * 0.26,
-              child: NavigationMenu(),
+              child: const NavigationMenu(),
             ),
-            Container(
+            SizedBox(
               width: screenWidth * 0.02,
-              child: IconsSide(),
+              child: const IconsSide(),
             ),
 
           ],

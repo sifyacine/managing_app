@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../utils/constants/colors.dart'; // Import for TColors
+import '../../../utils/helpers/helper_functions.dart'; // Import for THelperFunctions
 
 class OrdersCard extends StatefulWidget {
   final String quantity; // Example: '10' or '3.5'
@@ -25,6 +27,11 @@ class _OrdersCardState extends State<OrdersCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THelperFunctions.isDarkMode(context);
+    final backgroundColor = isDark ? TColors.dark : Colors.white;
+    final textColor = isDark ? Colors.white : Colors.black;
+    final addressTextColor = isDark ? Colors.grey[400] : Colors.grey[600];
+
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
         setState(() {
@@ -36,10 +43,10 @@ class _OrdersCardState extends State<OrdersCard> {
         setState(() {
           if (_dragPosition > 50) {
             _dragPosition = 160; // Action threshold for right swipe
-            print('Right swipe action triggered'); // Replace with actual action
+            // Trigger right swipe action here, e.g., delete
           } else if (_dragPosition < -50) {
             _dragPosition = -160; // Action threshold for left swipe
-            print('Left swipe action triggered'); // Replace with actual action
+            // Trigger left swipe action here, e.g., edit, share, info
           } else {
             _dragPosition = 0; // Return to original position
           }
@@ -48,53 +55,55 @@ class _OrdersCardState extends State<OrdersCard> {
       child: Stack(
         children: [
           // Background action for swipe right
-          if (_dragPosition > 0) Positioned(
-            left: 0,
-            right: _dragPosition,
-            child: Container(
-              color: Colors.red,
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(right: 20),
-              child: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.white),
-                onPressed: () {
-                  print('Delete action triggered');
-                },
+          if (_dragPosition > 0)
+            Positioned(
+              left: 0,
+              right: _dragPosition,
+              child: Container(
+                color: Colors.red,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 20),
+                child: IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.white),
+                  onPressed: () {
+                    // Implement delete action here
+                  },
+                ),
               ),
             ),
-          ),
           // Background action for swipe left
-          if (_dragPosition < 0) Positioned(
-            left: -_dragPosition,
-            right: 0,
-            child: Container(
-              color: Colors.purple,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    onPressed: () {
-                      print('Edit action triggered');
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.share, color: Colors.white),
-                    onPressed: () {
-                      print('Share action triggered');
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.info, color: Colors.white),
-                    onPressed: () {
-                      print('Info action triggered');
-                    },
-                  ),
-                ],
+          if (_dragPosition < 0)
+            Positioned(
+              left: -_dragPosition,
+              right: 0,
+              child: Container(
+                color: Colors.purple,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.white),
+                      onPressed: () {
+                        // Implement edit action here
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.share, color: Colors.white),
+                      onPressed: () {
+                        // Implement share action here
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.info, color: Colors.white),
+                      onPressed: () {
+                        // Implement info action here
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           // Foreground content
           Transform.translate(
             offset: Offset(_dragPosition, 0),
@@ -103,7 +112,7 @@ class _OrdersCardState extends State<OrdersCard> {
               height: 60,
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -136,7 +145,7 @@ class _OrdersCardState extends State<OrdersCard> {
                         Center(
                           child: Text(
                             widget.quantity,
-                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: textColor),
                           ),
                         ),
                         Positioned(
@@ -146,13 +155,13 @@ class _OrdersCardState extends State<OrdersCard> {
                           child: Center(
                             child: Container(
                               padding: const EdgeInsets.all(4.0),
-                              color: Colors.white,
+                              color: backgroundColor,
                               child: Text(
                                 widget.unit,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black,
+                                  color: textColor,
                                 ),
                               ),
                             ),
@@ -165,13 +174,13 @@ class _OrdersCardState extends State<OrdersCard> {
                           child: Center(
                             child: Container(
                               padding: const EdgeInsets.all(2.0),
-                              color: Colors.white,
-                              child: const Text(
+                              color: backgroundColor,
+                              child: Text(
                                 'x',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: textColor,
                                 ),
                               ),
                             ),
@@ -187,7 +196,7 @@ class _OrdersCardState extends State<OrdersCard> {
                       children: [
                         Text(
                           widget.name,
-                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: textColor),
                         ),
                         const SizedBox(height: 4),
                         Row(
@@ -196,13 +205,13 @@ class _OrdersCardState extends State<OrdersCard> {
                             Expanded(
                               child: Text(
                                 widget.address,
-                                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                style: TextStyle(fontSize: 10, color: addressTextColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Text(
                               widget.price,
-                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: textColor),
                             ),
                           ],
                         ),

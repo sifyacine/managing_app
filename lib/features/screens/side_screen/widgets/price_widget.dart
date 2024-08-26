@@ -15,13 +15,13 @@ class PriceWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
             ),
             padding: const EdgeInsets.all(8.0),
-            child: Text(
+            child: const Text(
               "Not paid",
               style: TextStyle(color: Colors.white, fontSize: 12),
 
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -31,7 +31,7 @@ class PriceWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(18),
                 ),
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
+                child: const Text(
                   "10%",
                   style: TextStyle(color: Colors.white, fontSize: 12),
 
@@ -39,7 +39,7 @@ class PriceWidget extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
+                child: const Text(
                   "2800",
                   style: TextStyle(
                     color: Colors.grey,
@@ -50,7 +50,7 @@ class PriceWidget extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
+                child: const Text(
                   "2620",
                   style: TextStyle(
                     color: Colors.black,

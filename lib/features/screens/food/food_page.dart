@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import '../../../common/products/product_card.dart';
 import '../../../utils/constants/colors.dart';
 import '../../models/products/prooducts model.dart';
+import '../../../utils/helpers/helper_functions.dart'; // Import the helper function for dark mode
 
 class FoodScreen extends StatelessWidget {
   const FoodScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THelperFunctions.isDarkMode(context);
+
     return DefaultTabController(
       length: 8, // Number of tabs
       child: Scaffold(
-        backgroundColor: Colors.grey[200], // Set the background color of the page
+        backgroundColor: isDark ? Colors.grey[850] : Colors.grey[200], // Adjust background color for dark mode
         appBar: AppBar(
-          backgroundColor: Colors.grey[200], // Set the app bar background to transparent
+          backgroundColor: isDark ? Colors.grey[850] : Colors.grey[200], // Adjust app bar background for dark mode
           elevation: 0, // Remove the shadow of the app bar
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight), // Height of the TabBar
@@ -21,12 +24,12 @@ class FoodScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isDark ? Colors.grey[800] : Colors.white, // Adjust TabBar container color for dark mode
                   borderRadius: BorderRadius.circular(8), // Correct border radius
-                ), // Set the background color of the TabBar
+                ),
                 child: TabBar(
                   isScrollable: true, // Allows horizontal scrolling of tabs if they overflow
-                  tabs: [
+                  tabs: const [
                     Text("Daily Breakfast", style: TextStyle(fontSize: 14)),
                     Text("Special Offers", style: TextStyle(fontSize: 14)),
                     Text("Soup and Appetizers", style: TextStyle(fontSize: 14)),
@@ -38,8 +41,8 @@ class FoodScreen extends StatelessWidget {
                   ],
                   labelPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
                   indicator: CustomTabIndicator(), // Use custom indicator
-                  labelColor: Colors.white, // Color of the selected tab text
-                  unselectedLabelColor: Colors.black, // Color of the unselected tab text
+                  labelColor: isDark ? Colors.white : Colors.black, // Adjust label color based on dark mode
+                  unselectedLabelColor: isDark ? Colors.grey[500] : Colors.black, // Adjust unselected label color for dark mode
                 ),
               ),
             ),
@@ -71,11 +74,11 @@ class FoodScreen extends StatelessWidget {
 
           // Determine the number of columns based on screen width
           int crossAxisCount;
-          if (screenWidth < 500) {
+          if (screenWidth < 400) {
             crossAxisCount = 2; // Small screens
           } else if (screenWidth < 700) {
             crossAxisCount = 3; // Medium screens
-          } else if (screenWidth < 900) {
+          } else if (screenWidth < 800) {
             crossAxisCount = 4; // Large screens
           } else {
             crossAxisCount = 5; // Extra-large screens
@@ -84,8 +87,8 @@ class FoodScreen extends StatelessWidget {
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: crossAxisCount,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 6.0,
+              mainAxisSpacing: 6.0,
               childAspectRatio: 0.7, // Adjust ratio to fit your design
             ),
             itemCount: products.length,
@@ -103,6 +106,7 @@ class FoodScreen extends StatelessWidget {
     );
   }
 }
+
 final List<Product> products = [
   Product(
     imageUrl: 'assets/images/desserts/Brownie Sundae.jpg',
@@ -141,9 +145,6 @@ final List<Product> products = [
   ),
 ];
 
-
-
-
 class CustomTabIndicator extends Decoration {
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
@@ -163,19 +164,37 @@ class _CustomTabIndicatorPainter extends BoxPainter {
     final Paint borderPaint = Paint()
       ..color = TColors.primaryColor // Border color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1; // Set to 1 to have a visible border
+      ..strokeWidth = 1; // Border width
 
-    const double indicatorWidth = 100;
+    // Define margin around the indicator
+    const double margin = 4.0;
     const double indicatorHeight = 50;
     const double borderRadius = 8;
 
+    // Calculate text width using TextPainter
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: 'Sample Text', // Use a default sample text
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )
+      ..layout(); // Layout the text
+
+    // Use the text width to determine the indicator width
+    final double textWidth = textPainter.width;
+    final double indicatorWidth = textWidth + 2 * margin;
+
     final Rect rect = Offset(
       offset.dx + configuration.size!.width / 2 - indicatorWidth / 2,
-      configuration.size!.height - indicatorHeight,
+      configuration.size!.height - indicatorHeight + margin,
     ) &
-    Size(indicatorWidth, indicatorHeight);
+    Size(indicatorWidth, indicatorHeight - margin);
 
-    final RRect rRect = RRect.fromRectAndRadius(rect, const Radius.circular(borderRadius));
+    final RRect rRect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
 
     canvas.drawRRect(rRect, paint);
     canvas.drawRRect(rRect, borderPaint); // Draw border

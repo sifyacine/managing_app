@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:managing_app/utils/helpers/helper_functions.dart';
+import 'features/screens/food/food_page.dart';
 import 'utils/constants/colors.dart';
-
 
 // Assume this class is defined elsewhere and imported accordingly
 class MyTabBarController extends GetxController {
   late TabController tabController;
-  List<Widget> screens = []; // Define your screens here
+  List<Widget> screens = [
+    Container(),
+    const FoodScreen(),
+    Container(),
+    Container(),
+    Container(),
+  ]; // Define your screens here
 
   MyTabBarController(TickerProvider vsync) {
     tabController = TabController(length: 5, vsync: vsync);
@@ -28,7 +35,8 @@ class NavigationTabBar extends StatefulWidget {
   _NavigationTabBarState createState() => _NavigationTabBarState();
 }
 
-class _NavigationTabBarState extends State<NavigationTabBar> with SingleTickerProviderStateMixin {
+class _NavigationTabBarState extends State<NavigationTabBar>
+    with SingleTickerProviderStateMixin {
   late MyTabBarController _controller;
 
   @override
@@ -39,12 +47,14 @@ class _NavigationTabBarState extends State<NavigationTabBar> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THelperFunctions.isDarkMode(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Top Bar with TabBar and Search
         Container(
-          color: Colors.white,
+          color: isDark ? Colors.black : Colors.white,
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
@@ -55,10 +65,12 @@ class _NavigationTabBarState extends State<NavigationTabBar> with SingleTickerPr
                   child: TabBar(
                     controller: _controller.tabController,
                     isScrollable: true,
-                    indicator: CustomTabIndicator(), // Use custom indicator
+                    indicator: CustomTabIndicator(),
+                    // Use custom indicator
                     labelPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    labelColor: TColors.primaryColor,
-                    unselectedLabelColor: Colors.black,
+                    labelColor: isDark ? Colors.white : TColors.primaryColor,
+                    unselectedLabelColor:
+                        isDark ? Colors.white70 : Colors.black,
                     tabs: [
                       buildTab('Categories', Iconsax.home),
                       buildTab('Food', Iconsax.cake),
@@ -112,27 +124,50 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: TextField(
+    final isDark = THelperFunctions.isDarkMode(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: isDark ? Colors.white70 : Colors.grey, width: 1.0),
+        borderRadius: BorderRadius.circular(8.0),
+        color: isDark ? Colors.grey[850] : Colors.white,
+      ),
+      child: Stack(
+        children: [
+          TextField(
+            style: TextStyle(color: isDark ? Colors.white : Colors.black),
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
+              border: InputBorder.none,
+              // Removes the border
+              enabledBorder: InputBorder.none,
+              // Removes the border when enabled
+              focusedBorder: InputBorder.none,
+              // Removes the border when focused
               hintText: 'Search...',
-              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+              hintStyle:
+                  TextStyle(color: isDark ? Colors.white70 : Colors.grey),
+              contentPadding: EdgeInsets.all(8.0), // Adjust padding as needed
             ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Icon(Icons.search),
-        ),
-      ],
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              color: isDark ? Colors.grey[850] : Colors.white,
+              // Match the background color of the search bar
+              child: const Center(
+                child: Icon(Icons.search),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 class CustomTabIndicator extends Decoration {
   @override
@@ -162,25 +197,23 @@ class _CustomTabIndicatorPainter extends BoxPainter {
 
     // Calculate the position of the indicator based on the current tab
     final Rect rect = Offset(
-      offset.dx + configuration.size!.width / 2 - indicatorWidth / 2,
-      configuration.size!.height - indicatorHeight,
-    ) &
-    const Size(indicatorWidth, indicatorHeight);
+          offset.dx + configuration.size!.width / 2 - indicatorWidth / 2,
+          configuration.size!.height - indicatorHeight,
+        ) &
+        const Size(indicatorWidth, indicatorHeight);
 
-    final RRect rRect = RRect.fromRectAndRadius(rect, const Radius.circular(borderRadius));
+    final RRect rRect =
+        RRect.fromRectAndRadius(rect, const Radius.circular(borderRadius));
 
     canvas.drawRRect(rRect, paint);
     canvas.drawRRect(rRect, borderPaint); // Draw border
   }
 }
 
-
-
 // Controller class for managing navigation state
 class MyDrawerController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 }
-
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({Key? key}) : super(key: key);
@@ -189,13 +222,14 @@ class DrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MyDrawerController());
     final screenWidth = MediaQuery.of(context).size.width;
+    final isDark = THelperFunctions.isDarkMode(context);
 
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       child: Column(
         children: [
           // Header with Logo
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Center(
               child: Image.asset(
@@ -207,8 +241,8 @@ class DrawerMenu extends StatelessWidget {
             ),
           ),
           // Divider between the header and menu items
-          const Divider(
-            color: Colors.grey,
+          Divider(
+            color: isDark ? Colors.white54 : Colors.grey,
             thickness: 1.0,
           ),
           // Wrap the drawer tiles with an Expanded widget containing a SingleChildScrollView
@@ -222,7 +256,6 @@ class DrawerMenu extends StatelessWidget {
                     count: 10,
                     onTap: () {
                       controller.selectedIndex.value = 0;
-
                     },
                     showLabel: screenWidth >= 800,
                   ),
@@ -253,7 +286,7 @@ class DrawerMenu extends StatelessWidget {
                     },
                     showLabel: screenWidth >= 800,
                   ),
-
+                  const SizedBox(height: 60),
                   DrawerTile(
                     icon: Iconsax.setting,
                     label: 'Settings',
@@ -286,7 +319,7 @@ class DrawerMenu extends StatelessWidget {
                     label: 'Power Off',
                     count: 0,
                     onTap: () {
-                      // Handle logout
+                      controller.selectedIndex.value = 5;
                     },
                     showLabel: screenWidth >= 800,
                   ),
@@ -308,25 +341,32 @@ class DrawerTile extends StatelessWidget {
   final bool showLabel;
 
   const DrawerTile({
-    Key? key,
     required this.icon,
     required this.label,
     required this.count,
     required this.onTap,
-    this.showLabel = true,
+    required this.showLabel,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THelperFunctions.isDarkMode(context);
+
     return ListTile(
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 14.0),
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 7.0, horizontal: 14.0),
       title: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Stack(
             children: [
-              Icon(icon, size: 24), // Main icon
+              Icon(
+                icon,
+                size: 24,
+                color: isDark ? Colors.white : Colors.black,
+              ), // Main icon
               if (count > 0)
                 Positioned(
                   right: 0, // Adjust this value to position the badge correctly
@@ -354,7 +394,8 @@ class DrawerTile extends StatelessWidget {
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
                   fontSize: 10.0, // Smaller text size
                   fontWeight: FontWeight.bold,
                 ),

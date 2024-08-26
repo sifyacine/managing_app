@@ -1,8 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {
+  const CustomDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -18,22 +19,22 @@ class CustomDialog extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.lock, size: 50),
-                SizedBox(height: 10),
-                Text(
+                const Icon(Icons.lock, size: 50),
+                const SizedBox(height: 10),
+                const Text(
                   '15:16',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   'Abdessamed Bouazza',
                   style: TextStyle(fontSize: 18),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -41,15 +42,15 @@ class CustomDialog extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: Icon(Icons.arrow_back),
-                      label: Text('Return'),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Return'),
                     ),
                     ElevatedButton.icon(
                       onPressed: () {
                         // Add your unlock functionality here
                       },
-                      icon: Icon(Icons.vpn_key),
-                      label: Text('Unlock'),
+                      icon: const Icon(Icons.vpn_key),
+                      label: const Text('Unlock'),
                     ),
                   ],
                 ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../utils/constants/colors.dart'; // Import for TColors
+import '../../../utils/helpers/helper_functions.dart'; // Import for THelperFunctions
 
 class ProductCard extends StatelessWidget {
   final String imageUrl;
@@ -14,7 +16,13 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = THelperFunctions.isDarkMode(context);
+    final textColor = isDark ? Colors.white : Colors.black;
+    final backgroundColor = isDark ? TColors.dark : Colors.white;
+    final priceTextColor = isDark ? Colors.grey[300] : Colors.grey[700];
+
     return Card(
+      color: backgroundColor,
       elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -23,10 +31,10 @@ class ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: Image.asset(
               imageUrl,
-              height: 120,
+              height: 100,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
@@ -41,14 +49,15 @@ class ProductCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: textColor,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'Price: DZD ${price.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[700],
+                    color: priceTextColor,
                   ),
                 ),
               ],

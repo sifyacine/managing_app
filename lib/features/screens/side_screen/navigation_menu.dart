@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:managing_app/features/screens/side_screen/side_screen.dart';
+import 'package:managing_app/features/screens/side_screen/widgets/show_dialog.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/helpers/helper_functions.dart';
 
@@ -22,7 +23,7 @@ class NavigationMenu extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(Iconsax.undo, 0, controller),
-              _buildNavItem(Iconsax.shop, 1, controller),
+              _buildNavItem(Iconsax.unlock, 1, controller),
               _buildNavItem(Iconsax.heart, 2, controller),
               _buildNavItem(Iconsax.user, 3, controller),
             ],
@@ -62,5 +63,5 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
-  final screens = [Container(), Container(), SideScreen(), Container()];
+  final screens = [Container(), CustomDialog(), const SideScreen(), Container()];
 }
