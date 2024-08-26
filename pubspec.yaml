@@ -21,6 +21,7 @@ dependencies:
   intl: ^0.19.0
   logger: ^2.0.1
   url_launcher: ^6.1.12
+  flutter_slidable: ^3.1.1
 
   # state management
   get: ^4.6.5
@@ -39,9 +40,27 @@ flutter:
 
   uses-material-design: true
 
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/icons/side_items.png
+    - assets/icons/food.png
+    - assets/icons/favorited.png
+    - assets/icons/drinks.png
+    - assets/icons/categories.png
+    - assets/logo/logo.png
+    - assets/images/burgers/BBQ Bacon Burger.jpg
+    - assets/images/burgers/Classic cheese burger.jpg
+    - assets/images/burgers/Double Decker Burger.jpg
+    - assets/images/burgers/Spicy Chicken Burger.jpg
+    - assets/images/burgers/Veggie Delight Burger.jpg
+    - assets/images/desserts/Apple Pie.jpg
+    - assets/images/desserts/Brownie Sundae.jpg
+    - assets/images/desserts/Cheesecake.jpg
+    - assets/images/desserts/Chocolate Lava Cake.jpg
+    - assets/images/desserts/Tiramisu.jpg
+    - assets/images/drinks/Classic Lemonade.jpg
+    - assets/images/drinks/Green Tea.jpg
+    - assets/images/drinks/Hot Chocolate.jpg
+    - assets/images/drinks/Iced Coffee.jpg
 
 
 
