@@ -29,7 +29,8 @@ class MainScreen extends StatelessWidget {
             Container(
               width: screenWidth * 0.26,
               child: NavigationMenu(),
-            ),            Container(
+            ),
+            Container(
               width: screenWidth * 0.02,
               child: IconsSide(),
             ),
