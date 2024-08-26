@@ -4,22 +4,13 @@ import 'package:iconsax/iconsax.dart';
 import 'features/screens/food/food_page.dart';
 import 'utils/constants/colors.dart';
 
-// Controller class for managing tab navigation state
-class MyTabBarController extends GetxController with GetSingleTickerProviderStateMixin {
+// Assume this class is defined elsewhere and imported accordingly
+class MyTabBarController extends GetxController {
   late TabController tabController;
+  List<Widget> screens = []; // Define your screens here
 
-  final screens = [
-    Container(), // Replace with actual content widgets
-    const FoodScreen(),
-    Container(),
-    Container(),
-    Container(),
-  ];
-
-  @override
-  void onInit() {
-    super.onInit();
-    tabController = TabController(length: 5, vsync: this); // Number of tabs
+  MyTabBarController(TickerProvider vsync) {
+    tabController = TabController(length: 5, vsync: vsync);
   }
 
   @override
@@ -30,13 +21,24 @@ class MyTabBarController extends GetxController with GetSingleTickerProviderStat
 }
 
 // NavigationTabBar widget
-class NavigationTabBar extends StatelessWidget {
+class NavigationTabBar extends StatefulWidget {
   const NavigationTabBar({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(MyTabBarController());
+  _NavigationTabBarState createState() => _NavigationTabBarState();
+}
 
+class _NavigationTabBarState extends State<NavigationTabBar> with SingleTickerProviderStateMixin {
+  late MyTabBarController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Get.put(MyTabBarController(this));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,73 +53,18 @@ class NavigationTabBar extends StatelessWidget {
                 child: SizedBox(
                   height: 60, // Adjust the height as necessary
                   child: TabBar(
-                    controller: controller.tabController,
+                    controller: _controller.tabController,
                     isScrollable: true,
                     indicator: CustomTabIndicator(), // Use custom indicator
                     labelPadding: const EdgeInsets.symmetric(horizontal: 20.0),
                     labelColor: TColors.primaryColor,
                     unselectedLabelColor: Colors.black,
-                    tabs: const [
-                      Tab(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Iconsax.home),
-                            Text(
-                              'Categories',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Iconsax.home),
-                            Text(
-                              'Food',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Iconsax.home),
-                            Text(
-                              'Favored',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Iconsax.home),
-                            Text(
-                              'Drinks',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Iconsax.home),
-                            Text(
-                              'Side Items',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
+                    tabs: [
+                      buildTab('Categories', Iconsax.home),
+                      buildTab('Food', Iconsax.cake),
+                      buildTab('Favored', Iconsax.heart),
+                      buildTab('Drinks', Iconsax.coffee),
+                      buildTab('Side Items', Iconsax.milk),
                     ],
                   ),
                 ),
@@ -127,12 +74,7 @@ class NavigationTabBar extends StatelessWidget {
                 padding: EdgeInsets.only(left: 16.0),
                 child: SizedBox(
                   width: 200,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Search...',
-                    ),
-                  ),
+                  child: SearchBar(),
                 ),
               ),
             ],
@@ -141,14 +83,56 @@ class NavigationTabBar extends StatelessWidget {
         // Content Area
         Expanded(
           child: TabBarView(
-            controller: controller.tabController,
-            children: controller.screens,
+            controller: _controller.tabController,
+            children: _controller.screens,
           ),
         ),
       ],
     );
   }
+
+  Widget buildTab(String text, IconData icon) {
+    return Tab(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Search...',
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: Icon(Icons.search),
+        ),
+      ],
+    );
+  }
+}
+
 
 class CustomTabIndicator extends Decoration {
   @override
@@ -233,17 +217,18 @@ class DrawerMenu extends StatelessWidget {
               child: Column(
                 children: [
                   DrawerTile(
-                    icon: Iconsax.home,
-                    label: 'Home',
+                    icon: Iconsax.bag,
+                    label: 'Orders',
                     count: 10,
                     onTap: () {
                       controller.selectedIndex.value = 0;
+                      
                     },
                     showLabel: screenWidth >= 800,
                   ),
                   DrawerTile(
                     icon: Iconsax.shop,
-                    label: 'Food',
+                    label: 'Tables',
                     count: 0,
                     onTap: () {
                       controller.selectedIndex.value = 1;
@@ -251,8 +236,8 @@ class DrawerMenu extends StatelessWidget {
                     showLabel: screenWidth >= 800,
                   ),
                   DrawerTile(
-                    icon: Iconsax.star,
-                    label: 'Favorites',
+                    icon: Iconsax.call,
+                    label: 'Call Center',
                     count: 0,
                     onTap: () {
                       controller.selectedIndex.value = 2;
@@ -260,36 +245,36 @@ class DrawerMenu extends StatelessWidget {
                     showLabel: screenWidth >= 800,
                   ),
                   DrawerTile(
-                    icon: Iconsax.coffee,
-                    label: 'Drinks',
+                    icon: Iconsax.car,
+                    label: 'Delivery',
                     count: 0,
                     onTap: () {
                       controller.selectedIndex.value = 3;
                     },
                     showLabel: screenWidth >= 800,
                   ),
-                  
-                  DrawerTile(
-                    icon: Iconsax.coffee,
-                    label: 'More Drinks',
-                    count: 0,
-                    onTap: () {
-                      controller.selectedIndex.value = 3;
-                    },
-                    showLabel: screenWidth >= 800,
-                  ),
-                  DrawerTile(
-                    icon: Iconsax.coffee,
-                    label: 'Even More Drinks',
-                    count: 0,
-                    onTap: () {
-                      controller.selectedIndex.value = 3;
-                    },
-                    showLabel: screenWidth >= 800,
-                  ),
+
                   DrawerTile(
                     icon: Iconsax.setting,
                     label: 'Settings',
+                    count: 0,
+                    onTap: () {
+                      controller.selectedIndex.value = 3;
+                    },
+                    showLabel: screenWidth >= 800,
+                  ),
+                  DrawerTile(
+                    icon: Iconsax.money,
+                    label: 'Quick End',
+                    count: 0,
+                    onTap: () {
+                      controller.selectedIndex.value = 3;
+                    },
+                    showLabel: screenWidth >= 800,
+                  ),
+                  DrawerTile(
+                    icon: Iconsax.pause,
+                    label: 'Shift Off',
                     count: 0,
                     onTap: () {
                       controller.selectedIndex.value = 4;
@@ -298,7 +283,7 @@ class DrawerMenu extends StatelessWidget {
                   ),
                   DrawerTile(
                     icon: Iconsax.logout,
-                    label: 'Logout',
+                    label: 'Power Off',
                     count: 0,
                     onTap: () {
                       // Handle logout
@@ -335,19 +320,18 @@ class DrawerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      contentPadding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 14.0),
       title: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Stack(
             children: [
-              Icon(icon, size: 28), // Main icon
+              Icon(icon, size: 24), // Main icon
               if (count > 0)
                 Positioned(
-                  right: -6, // Adjust this value to position the badge correctly
-                  top: -6, // Adjust this value to position the badge correctly
+                  right: 0, // Adjust this value to position the badge correctly
+                  top: 0, // Adjust this value to position the badge correctly
                   child: Container(
-                    padding: const EdgeInsets.all(4.0),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
@@ -356,7 +340,7 @@ class DrawerTile extends StatelessWidget {
                       count.toString(),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10,
+                        fontSize: 10.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -371,7 +355,8 @@ class DrawerTile extends StatelessWidget {
                 label,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 14, // Smaller text size
+                  fontSize: 10.0, // Smaller text size
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

@@ -15,6 +15,7 @@ dependencies:
   # icons
   iconsax: ^0.0.8
   cupertino_icons: ^1.0.2
+  icons_plus: ^5.0.0
 
   # utility packages
   http: ^1.1.0
@@ -61,6 +62,7 @@ flutter:
     - assets/images/drinks/Green Tea.jpg
     - assets/images/drinks/Hot Chocolate.jpg
     - assets/images/drinks/Iced Coffee.jpg
+    - assets/icons/red_X_icon.png
 
 
 

@@ -21,7 +21,7 @@ class NavigationMenu extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(Iconsax.home, 0, controller),
+              _buildNavItem(Iconsax.undo, 0, controller),
               _buildNavItem(Iconsax.shop, 1, controller),
               _buildNavItem(Iconsax.heart, 2, controller),
               _buildNavItem(Iconsax.user, 3, controller),

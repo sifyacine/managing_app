@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ContactWidget extends StatelessWidget {
   const ContactWidget({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class ContactWidget extends StatelessWidget {
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.person, size: 24, color: Colors.black),
+                    Icon(Iconsax.user, size: 24, color: Colors.black),
                     Text(
                       "4",
                       style: TextStyle(
@@ -44,6 +45,7 @@ class ContactWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12), // Rounded corners
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Upper part
                     Padding(
@@ -53,24 +55,25 @@ class ContactWidget extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.person, size: 12, color: Colors.black),
+                              Icon(Icons.person, size: 12, color: Colors.purple),
                               SizedBox(width: 8.0),
                               Text(
                                 'John Doe',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12.0,
+                                  color: Colors.purple,
                                 ),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Icon(Icons.phone, size: 12, color: Colors.black),
+                              Icon(Icons.phone, size: 12, color: Colors.purple),
                               SizedBox(width: 8.0),
-                              Icon(Icons.email, size: 12, color: Colors.black),
+                              Icon(Icons.email, size: 12, color: Colors.purple),
                               SizedBox(width: 8.0),
-                              Icon(Icons.message, size: 12, color: Colors.black),
+                              Icon(Icons.message, size: 12, color: Colors.purple),
                             ],
                           ),
                         ],
@@ -84,7 +87,6 @@ class ContactWidget extends StatelessWidget {
                           'by John Doe',
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

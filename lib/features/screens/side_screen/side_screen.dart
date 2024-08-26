@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:managing_app/features/screens/side_screen/widgets/icons_menu.dart';
-import 'package:managing_app/features/screens/side_screen/widgets/icons_side.dart';
 import 'package:managing_app/features/screens/side_screen/widgets/price_widget.dart';
 import 'package:managing_app/features/screens/side_screen/widgets/service_widget.dart';
 import 'package:managing_app/features/screens/side_screen/widgets/top_widget.dart';
@@ -13,20 +11,18 @@ class SideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         Expanded(
           flex: 8,
-          child: Container(
-            child: Column(
-              children: [
-                Expanded(flex: 1, child: CustomCardWidget()),
-                Expanded(flex: 1, child: ContactWidget()),
-                Expanded(flex: 6, child: OrdersWidget()),
-                Expanded(flex: 1, child: ServiceWidget()),
-                Expanded(flex: 1, child: PriceWidget()),
-              ],
-            ),
+          child: Column(
+            children: [
+              Expanded(flex: 1, child: CustomCardWidget()),
+              Expanded(flex: 1, child: ContactWidget()),
+              Expanded(flex: 6, child: OrdersWidget()),
+              Expanded(flex: 1, child: ServiceWidget()),
+              Expanded(flex: 1, child: PriceWidget()),
+            ],
           ),
         ),
       ],
