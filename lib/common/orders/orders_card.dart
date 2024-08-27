@@ -75,7 +75,7 @@ class _OrdersCardState extends State<OrdersCard> {
           if (_dragPosition < 0)
             Positioned(
               left: -_dragPosition,
-              right: 0,
+              right: -8,
               child: Container(
                 color: Colors.purple,
                 alignment: Alignment.centerLeft,
